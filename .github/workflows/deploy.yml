@@ -1,24 +1,34 @@
-name: Deploy 🚀
+name: Docker Build
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🛠️ Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: ⚙️ Setup .NET 9 SDK
-        uses: actions/setup-dotnet@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          dotnet-version: 9.x
-      - name: 📦 Restore Dependencies
-        run: dotnet restore ./Webapi/Webapi.csproj
-      - name: 🏗️ Build Project
-        run: dotnet build ./Webapi/Webapi.csproj --no-restore
-      - name: ✅ Run Tests
-        run: dotnet test ./Webapi/Webapi.csproj --no-build --verbosity normal
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/tarasrokochyi/webapi:latest
+            ghcr.io/tarasrokochyi/webapi:${{ github.sha }}
