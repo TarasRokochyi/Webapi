@@ -11,6 +11,7 @@ RUN dotnet publish --no-restore -o /app
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
+ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
 WORKDIR /app
 COPY --link --from=build /app .
