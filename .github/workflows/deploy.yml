@@ -71,5 +71,5 @@ jobs:
         with:
           task-definition: ./deployments/ecs-task-definition.json
           service: unique_service
-          cluster: dev-cluster
+          cluster: altruistic-butterfly-zyyrml
           wait-for-service-stability: true
