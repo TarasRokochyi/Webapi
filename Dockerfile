@@ -11,7 +11,7 @@ RUN dotnet publish --no-restore -o /app
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
-EXPOSE 8080
+EXPOSE 80
 WORKDIR /app
 COPY --link --from=build /app .
 ENTRYPOINT ["./Webapi"]
