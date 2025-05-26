@@ -70,6 +70,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ./deployments/ecs-task-definition.json
-          service: webapi-service-oskfxquc
+          service: unique_service
           cluster: altruistic-butterfly-zyyrml
           wait-for-service-stability: true
